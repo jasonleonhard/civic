@@ -32,7 +32,7 @@
     "in": "lerna run --scope",
     "link:all": "lerna link",
     "lint": "lerna run lint -- --fix",
-    "storybook": "BABEL_ENV=esm start-storybook -p 6006",
+    "storybook": "BABEL_ENV=esm start-storybook -p 8081",
     "test": "lerna run test",
     "travis": "make travis"
   },
