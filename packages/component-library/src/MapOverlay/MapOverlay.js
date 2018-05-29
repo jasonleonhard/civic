@@ -12,21 +12,29 @@ const mapWrapper = css`
 
 const colorScale = r => [r * 255, 140, 200 * (1 - r)];
 
+const DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/geojson/vancouver-blocks.json'; // eslint-disable-line
+
 class MapOverlay extends Component {
   constructor(props) {
     super(props);
     this.state = {
       viewport:{
+        ...DeckGLOverlay.defaultViewport,
         width: window.innerWidth > 900 ? 898 : window.innerWidth,
         height: 400,
         pitch: 45,
         bearing: 0,
         latitude: 49.254,   // vancouver bc
         longitude: -123.13, // vancouver bc
-        zoom: 11,
       },
-      // data: null
+      data: null
     };
+
+    fetch(DATA_URL)
+      .then(resp => resp.json())
+      .then(data => this.setState({data}));
+    this.onViewportChange = this.onViewportChange.bind(this);
+    this.resize = this.resize.bind(this);
   }
 
   componentDidMount() {
@@ -52,11 +60,11 @@ class MapOverlay extends Component {
   }
 
   render() {
-    const {viewport} = this.state;
-    const { data, mapboxStyle, mapboxToken, opacity, filled, wireframe, extruded, elevation } = this.props;
+    const {viewport, data} = this.state;
+    const { mapboxStyle, mapboxToken, opacity, filled, wireframe, extruded, elevation, onLayerClick, getPosition } = this.props;
 
     return (
-      <div className={mapWrapper}>
+      /*<div className={mapWrapper}>
         <MapGL
           className={'MapGL'}
           {...viewport}
@@ -64,7 +72,7 @@ class MapOverlay extends Component {
              onViewportChange={this.onViewportChange.bind(this)}
              mapboxApiAccessToken={mapboxToken}
              onViewportChange={ viewport => this.onViewportChange(viewport)}
-        >
+        >*/
           <DeckGLOverlay
             viewport={viewport}
             data={data}
@@ -74,9 +82,11 @@ class MapOverlay extends Component {
             wireframe={wireframe}
             extruded={extruded}
             elevation={elevation}
+            getPosition={getPosition}
+            onLayerClick={onLayerClick}
           />
-        </MapGL>
-      </div>
+       /* </MapGL>
+      </div>*/
     );
   };
 };
