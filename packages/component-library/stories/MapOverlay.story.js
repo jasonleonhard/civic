@@ -1,12 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, boolean, number, selectV2 } from '@storybook/addon-knobs';
+import { withKnobs, boolean, number, selectV2 } from '@storybook/addon-knobs';import { action } from '@storybook/addon-actions';
+
 import { MapOverlay } from '../src';
-import DeckGLOverlay from '../src/MapOverlay/map-deckgl-overlay';
+import { BaseMap } from '../src';
 import MapGL from 'react-map-gl';
 import { checkA11y } from '@storybook/addon-a11y';
-import mapoverlay from '../src/MapOverlay/mapoverlay.json';
+// import mapoverlay from '../src/MapOverlay/mapoverlay.json'; // BC
+import data from '../src/MapOverlay/mapoverlaydata.json' // Portland
 
 const displayName = MapOverlay.displayName || 'MapOverlay';
 // hard coded for ease for now:
@@ -38,14 +40,6 @@ const elevationOptions = {
    step: 1,
 };
 
-// const DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/geojson/vancouver-blocks.json'; // eslint-disable-line
-//
-// fetch(DATA_URL)
-//   .then(resp => resp.json())
-//   .then(data => this.setState({data}));
-// this.onViewportChange = this.onViewportChange.bind(this);
-// this.resize = this.resize.bind(this);
-
 const demoMap = () => {
   const opacity = number('Opacity:', 0.8, opacityOptions);
   const elevation = number('Elevation:', 10, elevationOptions);
@@ -56,17 +50,24 @@ const demoMap = () => {
   const mapboxStyle = selectV2('Mapbox Style', optionsStyle, optionsStyle['Label Maker']);
 
   return (
-    <MapOverlay
+    <BaseMap
       mapboxToken={mapboxToken}
       mapboxStyle={mapboxStyle}
-      opacity={opacity}
-      filled={filled}
-      wireframe={wireframe}
-      extruded={extruded}
-      elevation={elevation}
-      data={mapoverlay}
-    />
-  );
+    >
+      <MapOverlay
+        data={data.features}
+        mapboxToken={mapboxToken}
+        mapboxStyle={mapboxStyle}
+        opacity={opacity}
+        filled={filled}
+        wireframe={wireframe}
+        extruded={extruded}
+        elevation={elevation}
+        getPosition={f => f.geometry.coordinates}
+        onLayerClick={info => action('Layer clicked:', { depth: 2 })(info)}
+      />
+    </BaseMap>
+);
 };
 
 export default () => storiesOf(displayName, module)
