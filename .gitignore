@@ -5,6 +5,7 @@ build
 dist/
 es/
 lib-cov
+es
 
 *.log*
 .lock-wscript

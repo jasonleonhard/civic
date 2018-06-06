@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import MapGL from 'react-map-gl';
 import { css } from 'emotion';
-import './mapbox-gl.css';
 import PropTypes from 'prop-types';
 import DeckGL, {GeoJsonLayer} from 'deck.gl';
-
+import './mapbox-gl.css';
 
 const MapOverlay = (props) => {
   const { viewport, data, mapboxStyle, mapboxToken, opacity, filled, wireframe, extruded, elevation, onLayerClick, getPosition } = props;
