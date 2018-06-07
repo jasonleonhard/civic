@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import MapGL from 'react-map-gl';
 import { css } from 'emotion';
+import './mapbox-gl.css';
 import PropTypes from 'prop-types';
 import DeckGL, {GeoJsonLayer} from 'deck.gl';
-import './mapbox-gl.css';
 
 const MapOverlay = (props) => {
-  const { viewport, data, mapboxStyle, mapboxToken, opacity, filled, wireframe, extruded, elevation, onLayerClick, getPosition } = props;
+  const { viewport, data, mapboxStyle, mapboxToken, opacity, filled, wireframe, extruded, elevation, onLayerClick, getPosition, onLayerHover } = props;
 
   const mapWrapper = css`
-  margin: auto;
-  max-width: 900px;
+    margin: auto;
+    max-width: 900px;
   `;
 
   const colorScale = r => [r * 255, 140, 200 * (1 - r)];
@@ -39,22 +39,20 @@ const MapOverlay = (props) => {
     getFillColor: f => colorScale(f.properties.Shape_Length),
     getLineColor: f => [255, 255, 255],
     lightSettings: LIGHT_SETTINGS,
-    pickable: true, // Boolean(this.props.onHover),
+    pickable: true,
     autoHighlight: true,
-    // onHover: this.props.onHover,
     getPosition: getPosition,
     onClick: onLayerClick,
-    // onHover: ({object}) => setTooltip(object.properties.name || object.properties.station)
+    onHover: onLayerHover,
   });
 
   return (
-    <DeckGL {...viewport} layers={[layer]} />
+    <DeckGL {...viewport} layers={[layer]} className={'MapOverlay'} />
   );
 };
 
 MapOverlay.propTypes = {
   mapboxStyle: PropTypes.string,
-  mapboxToken: PropTypes.string.isRequired,
   opacity: PropTypes.number,
   elevation: PropTypes.number,
   filled: PropTypes.bool,

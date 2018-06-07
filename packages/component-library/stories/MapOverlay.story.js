@@ -1,14 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, boolean, number, selectV2 } from '@storybook/addon-knobs';import { action } from '@storybook/addon-actions';
-
+import { withKnobs, boolean, number, selectV2 } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
 import { MapOverlay } from '../src';
 import { BaseMap } from '../src';
 import MapGL from 'react-map-gl';
 import { checkA11y } from '@storybook/addon-a11y';
-// import mapoverlay from '../src/MapOverlay/mapoverlay.json'; // BC
-import data from '../src/MapOverlay/mapoverlaydata.json' // Portland
+import data from '../src/MapOverlay/mapoverlaydata.json'
 
 const displayName = MapOverlay.displayName || 'MapOverlay';
 // hard coded for ease for now:
@@ -67,7 +66,7 @@ const demoMap = () => {
         onLayerClick={info => action('Layer clicked:', { depth: 2 })(info)}
       />
     </BaseMap>
-);
+  );
 };
 
 export default () => storiesOf(displayName, module)
